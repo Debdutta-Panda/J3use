@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.compose.NavHost
@@ -21,11 +22,14 @@ import com.debduttapanda.j3lib.EventBusDescription
 import com.debduttapanda.j3lib.MyScreen
 import com.debduttapanda.j3lib.NotificationService
 import com.debduttapanda.j3lib.Route
+import com.debduttapanda.j3lib.SoftInputMode
 import com.debduttapanda.j3lib.WirelessViewModel
 import com.debduttapanda.j3lib.rememberNotifier
 import com.debduttapanda.j3lib.rememberStringState
+import com.debduttapanda.j3lib.rememberTState
 import com.debduttapanda.j3lib.wvm
 import com.debduttapanda.j3use.ui.theme.J3useTheme
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,9 +74,10 @@ fun SplashPage(){
     Text("Splash Page")
 }
 
+
 @Composable
 fun LoginPage(
-    name: State<String> = rememberStringState(id = MyDataIds.Name),
+    name: State<String> = rememberTState(id = MyDataIds.Name),
     notifier: NotificationService = rememberNotifier()
 ){
     Column{
@@ -125,7 +130,14 @@ class LoginViewModel: WirelessViewModel(){
     override fun onNotification(id: Any?, arg: Any?) {
         when(id){
             MyDataIds.ClickMe->{
-                toast("Clicked")
+                viewModelScope.launch(Dispatchers.Main) {
+                    val permission = android.Manifest.permission.CAMERA
+                    val permissions = listOf(android.Manifest.permission.CAMERA)
+
+                    var result = permission.checkPermission()
+                    var r = permission.requestPermission()
+
+                }
             }
         }
     }
