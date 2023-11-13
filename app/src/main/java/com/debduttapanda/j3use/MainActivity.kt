@@ -16,8 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.debduttapanda.j3lib.EventBusDescription
 import com.debduttapanda.j3lib.MyScreen
 import com.debduttapanda.j3lib.NotificationService
@@ -111,7 +113,8 @@ class SplashViewModel: WirelessViewModel(){
         viewModelScope.launch {
             delay(2000)
             navigation {
-                navigate(Routes.login.full)
+                val full = Routes.login.full
+                navigate(full)
             }
         }
     }
@@ -161,5 +164,16 @@ enum class MyDataIds{
 
 object Routes{
     val splash = Route("splash")
-    val login = Route("login")
+    val login = Route(
+        "login",
+        listOf(
+            navArgument("opt"){
+                defaultValue = "your_default_value"
+                type = NavType.StringType
+            },
+            navArgument("mnd"){
+                type = NavType.StringType
+            }
+        )
+    )
 }
